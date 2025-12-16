@@ -3,19 +3,22 @@ import Axios from "axios";
 import "./App.css";
 
 function App() {
+  const [city, setcity] = useState("Uzhavoor,India");
   const [Weatherdata, setweatherdata] = useState({
     main: {},
     weather: [{}],
   });
   useEffect(() => {
     async function getdata() {
-      const Api =
-        "https://api.openweathermap.org/data/2.5/weather?&appid=c5798e626bc4b7ad08acbb9ebf9d6d43&q=Uzhavoor,India&units=metric";
+      const Api_key = process.env.REACT_APP_API_KEY;
+      const Api_url = `https://api.openweathermap.org/data/2.5/weather?&appid=${Api_key}&q=${city}&units=metric`;
 
       try {
-        let response = await Axios.get(Api);
+        let response = await Axios.get(Api_url);
 
         setweatherdata(response.data);
+
+        localStorage.setItem("citiesList", JSON.stringify(city, ...city));
         console.log(response.data);
       } catch (err) {
         console.log(err);
